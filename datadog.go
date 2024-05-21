@@ -16,15 +16,15 @@ func RuntimeID() string {
 	return runtimeID
 }
 
-func Start(opts ...profiler.Option) error {
-	opts = append(opts, profiler.WithTags(ext.RuntimeID+":"+RuntimeID()))
+func StartDDProfiler(opts ...profiler.Option) error {
+	opts = append(opts, profiler.WithTags(ext.RuntimeID+":"+runtimeID))
 	if err := profiler.Start(opts...); err != nil {
 		return fmt.Errorf("unable to start datadog profiler: %w", err)
 	}
 	return nil
 }
 
-var Stop = profiler.Stop
+var StopDDProfiler = profiler.Stop
 
 func mkRuntimeID() string {
 	if id := os.Getenv("OTEL_TRACER_RUNTIME_ID"); id != "" {

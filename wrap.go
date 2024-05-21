@@ -67,15 +67,6 @@ func (o *spanWrapper) End(options ...trace.SpanEndOption) {
 		defer pprof.SetGoroutineLabels(o.PreviousCtx)
 	}
 
-	attrs := make([]attribute.KeyValue, 0, 2)
-	attrs = append(attrs, attribute.String(ext.RuntimeID, RuntimeID()))
-	if ext.RuntimeID != RuntimeIDHyphen {
-		attrs = append(attrs, attribute.String(RuntimeIDHyphen, RuntimeID()))
-	}
-	if ext.RuntimeID != RuntimeIDUnderline {
-		attrs = append(attrs, attribute.String(RuntimeIDUnderline, RuntimeID()))
-	}
-
-	o.Span.SetAttributes(attrs...)
+	o.Span.SetAttributes(attribute.String(ext.RuntimeID, RuntimeID()))
 	o.Span.End(options...)
 }

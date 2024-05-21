@@ -13,7 +13,7 @@ import (
 	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
 )
 
-func newTraceProvider() trace.TracerProvider {
+func stdoutTraceProvider() trace.TracerProvider {
 	exporter, err := stdouttrace.New(stdouttrace.WithPrettyPrint())
 	if err != nil {
 		panic(err)
@@ -26,16 +26,16 @@ func newTraceProvider() trace.TracerProvider {
 var tracer trace.Tracer
 
 func TestWrap(t *testing.T) {
-	err := Start(
+	err := StartDDProfiler(
 		profiler.WithProfileTypes(profiler.CPUProfile, profiler.HeapProfile),
 		profiler.WithTags("foo:bar", "hello:world"),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer Stop()
+	defer StopDDProfiler()
 
-	otel.SetTracerProvider(Wrap(newTraceProvider()))
+	otel.SetTracerProvider(Wrap(stdoutTraceProvider()))
 	tracer = otel.Tracer("testing")
 
 	_, span := tracer.Start(context.Background(), "test-wrap")
