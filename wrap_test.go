@@ -13,7 +13,7 @@ import (
 	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
 )
 
-func stdoutTraceProvider() trace.TracerProvider {
+func stdoutTraceProvider() *sdktrace.TracerProvider {
 	exporter, err := stdouttrace.New(stdouttrace.WithPrettyPrint())
 	if err != nil {
 		panic(err)
