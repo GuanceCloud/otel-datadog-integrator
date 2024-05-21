@@ -6,12 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GuanceCloud/oteldatadogtie/profiler"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
-	ddprofiler "gopkg.in/DataDog/dd-trace-go.v1/profiler"
+	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
 )
 
 func newTraceProvider() trace.TracerProvider {
@@ -27,14 +26,14 @@ func newTraceProvider() trace.TracerProvider {
 var tracer trace.Tracer
 
 func TestWrap(t *testing.T) {
-	err := profiler.Start(
-		ddprofiler.WithProfileTypes(ddprofiler.CPUProfile, ddprofiler.HeapProfile),
-		ddprofiler.WithTags("foo:bar", "hello:world"),
+	err := Start(
+		profiler.WithProfileTypes(profiler.CPUProfile, profiler.HeapProfile),
+		profiler.WithTags("foo:bar", "hello:world"),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer profiler.Stop()
+	defer Stop()
 
 	otel.SetTracerProvider(Wrap(newTraceProvider()))
 	tracer = otel.Tracer("testing")

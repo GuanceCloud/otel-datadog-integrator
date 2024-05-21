@@ -2,7 +2,6 @@ package oteldatadogtie
 
 import (
 	"context"
-	"github.com/GuanceCloud/oteldatadogtie/profiler"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/ext"
@@ -69,12 +68,12 @@ func (o *spanWrapper) End(options ...trace.SpanEndOption) {
 	}
 
 	attrs := make([]attribute.KeyValue, 0, 2)
-	attrs = append(attrs, attribute.String(ext.RuntimeID, profiler.RuntimeID()))
+	attrs = append(attrs, attribute.String(ext.RuntimeID, RuntimeID()))
 	if ext.RuntimeID != RuntimeIDHyphen {
-		attrs = append(attrs, attribute.String(RuntimeIDHyphen, profiler.RuntimeID()))
+		attrs = append(attrs, attribute.String(RuntimeIDHyphen, RuntimeID()))
 	}
 	if ext.RuntimeID != RuntimeIDUnderline {
-		attrs = append(attrs, attribute.String(RuntimeIDUnderline, profiler.RuntimeID()))
+		attrs = append(attrs, attribute.String(RuntimeIDUnderline, RuntimeID()))
 	}
 
 	o.Span.SetAttributes(attrs...)

@@ -1,4 +1,4 @@
-package profiler
+package oteldatadogtie
 
 import (
 	"encoding/base64"
