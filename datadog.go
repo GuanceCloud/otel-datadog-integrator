@@ -10,14 +10,21 @@ import (
 	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
 )
 
-var runtimeID = mkRuntimeID()
+var (
+	runtimeID    = mkRuntimeID()
+	TagRuntimeID = ext.RuntimeID + ":" + runtimeID
+)
 
 func RuntimeID() string {
 	return runtimeID
 }
 
+// StartDDProfiler is a wrapper of Datadog profiler.Start function,
+// the purpose is simply to set the tag runtime-id to our custom value, you
+// can also use the original Datadog profiler.Start function (if required) and
+// combining setting the TagRuntimeID tag.
 func StartDDProfiler(opts ...profiler.Option) error {
-	opts = append(opts, profiler.WithTags(ext.RuntimeID+":"+runtimeID))
+	opts = append(opts, profiler.WithTags(TagRuntimeID))
 	if err := profiler.Start(opts...); err != nil {
 		return fmt.Errorf("unable to start datadog profiler: %w", err)
 	}

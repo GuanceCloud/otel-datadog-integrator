@@ -23,6 +23,11 @@ const KeyRuntimeID attribute.Key = ext.RuntimeID
 
 var AttributeRuntimeID = KeyRuntimeID.String(runtimeID)
 
+// NewTracerProvider is a wrapper of trace.NewTracerProvider function in Open Telemetry trace sdk,
+// it adds AttributeRuntimeID attribute to Resource config and then call Wrap function, if you need
+// to config you custom Resource, you can use the original otel trace.NewTracerProvider function instead
+// and combing setting AttributeRuntimeID attribute, and last call Wrap to wrap your TracerProvider
+// instance.
 func NewTracerProvider(opts ...sdktrace.TracerProviderOption) *TracerProviderWrapper {
 	res := resource.Default()
 	if merged, err := resource.Merge(res, resource.NewSchemaless(AttributeRuntimeID)); err == nil {
@@ -32,6 +37,7 @@ func NewTracerProvider(opts ...sdktrace.TracerProviderOption) *TracerProviderWra
 	return Wrap(sdktrace.NewTracerProvider(opts...))
 }
 
+// Wrap registers a trace.SpanProcessor for your TraceProvider instance.
 func Wrap(tp *sdktrace.TracerProvider) *TracerProviderWrapper {
 	tp.RegisterSpanProcessor(new(pprofSpanProcessor))
 
