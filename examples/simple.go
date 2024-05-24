@@ -1,13 +1,3 @@
-# oteldatadogtie
-A wrapper for integrating Open Telemetry traces with datadog continuous profiling tool.
-
-## Install
-```shell
-go get github.com/GuanceCloud/oteldatadogtie
-```
-
-## Example
-```go
 package main
 
 import (
@@ -69,10 +59,10 @@ func main() {
 
 	otel.SetTracerProvider(tp)
 
-	// If you need to use custom Resource, you should add attribute 
-	// oteldatadogtie.AttributeRuntimeID to it, then you can call the 
-	// Open Telemetry original sdktrace.NewTracerProvider function as usual, 
-	// at last use oteldatadogtie.Wrap function to wrap your TracerProvider 
+	// If you need to use custom Resource, you should add attribute
+	// oteldatadogtie.AttributeRuntimeID to it, then you can call the
+	// Open Telemetry original sdktrace.NewTracerProvider function as usual,
+	// at last use oteldatadogtie.Wrap function to wrap your TracerProvider
 	// instance, for example:
 	//
 	// res, err := resource.New(ctx,
@@ -146,5 +136,3 @@ func fibonacci(ctx context.Context, n int) int {
 
 	return fibonacci(newCtx, n-1) + fibonacci(newCtx, n-2)
 }
-
-```
